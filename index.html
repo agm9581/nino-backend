@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>Socket.IO Test</h1>
+    <script>
+      const socket = io('http://localhost:3000');
+
+      socket.on('connect', () => {
+        console.log('Connected', socket.id);
+
+        // Send a message after connecting
+        socket.emit('message', { sender: '680e6b8375958ce591ce1568', content: 'Hello world!' });
+      });
+
+      socket.on('message', (data) => {
+        console.log('New message received:', data);
+      });
+    </script>
+  </body>
+</html>
+`
