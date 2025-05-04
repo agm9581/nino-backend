@@ -8,6 +8,7 @@ import {
   Delete,
   UnauthorizedException,
   HttpCode,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { MemberDto } from 'src/members/dto/member.dto';
@@ -30,6 +31,10 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() body: MemberDto) {
-    return await this.authService.register(body);
+    const registered = await this.authService.register(body);
+    if (registered) {
+      return { registration: 'Success' };
+    }
+    throw new InternalServerErrorException('Something went wrong');
   }
 }

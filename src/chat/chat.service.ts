@@ -18,14 +18,15 @@ export class ChatService {
   }
 
   async create(createMessageDto: MessageDto): Promise<void> {
-    const { sender, content } = createMessageDto;
+    const { sender, content, createdAt } = createMessageDto;
 
     try {
       // Log the data before attempting to save
       console.log('Saving message:', { sender, content });
       const messageData = {
         sender: new Types.ObjectId(sender), // Convert string to ObjectId
-        content
+        content,
+        createdAt,
       };
       // Create and save the message
       const message = new this.messageModel(messageData);

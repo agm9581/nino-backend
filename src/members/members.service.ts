@@ -52,11 +52,15 @@ export class MembersService {
     const { email, password } = member;
     const userFound = await this.memberModel.findOne({ email: email }).exec();
     if (!userFound) {
-      throw new NotFoundException(`No user found with email ${email}`);
+      throw new NotFoundException(
+        `Username and password combination doesn't correspond to any user`,
+      );
     }
 
     if ((await this.hashService.compare(password, userFound.password)) == false) {
-      throw new UnauthorizedException('Password mismatch');
+      throw new UnauthorizedException(
+        "Username and password combination doesn't correspond to any user",
+      );
     }
     return true;
   }

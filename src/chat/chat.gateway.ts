@@ -1,4 +1,5 @@
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
@@ -7,28 +8,57 @@ import {
 
 import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    private readonly chatService: ChatService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async handleConnection(client: Socket) {
+    const token = client.handshake.auth.token;
+    if (!token) {
+      client.disconnect();
+      return;
+    }
+
+    try {
+      const payload = this.jwtService.verify(token); // throws if invalid
+      (client as any).user = payload; // optionally attach user to socket
+      console.log('WebSocket authenticated:', payload);
+    } catch (err) {
+      console.error('WebSocket auth failed:', err.message);
+      client.disconnect();
+    }
+  }
 
   @SubscribeMessage('message')
-  async handleMessage(@MessageBody() data: MessageDto) {
-    this.server.emit('message', data);
-
-    console.log(this.chatService);
+  async handleMessage(
+    @MessageBody() data: { content: string; createdAt: string },
+    @ConnectedSocket() client: Socket,
+  ) {
+    const { content, createdAt } = data;
+    const user = (client as any).user;
+    const message = {
+      sender: user.sub, // or user.email
+      content: data.content,
+    };
     try {
-      console.log('Calling chatService.create()...');
-      console.log('data received', data);
-      await this.chatService.create(data);
+      // Save the message with the received timestamp
+      await this.chatService.create({ sender: message.sender, content, createdAt });
 
-      console.log('Message saved successfully!');
+      // Emit the message back to all clients with the timestamp
+      this.server.emit('message', { content, createdAt });
+
+      console.log('Message saved successfully with timestamp:', createdAt);
     } catch (error) {
-      console.error('Failed to save message to DB:', error);
+      console.error('Error saving message:', error);
     }
   }
 }
