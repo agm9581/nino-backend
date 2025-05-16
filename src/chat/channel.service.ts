@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Message } from '../chat/entities/message.schema';
+import { Message } from './entities/message.schema';
 import { MessageDto } from './dto/message.dto';
 
 @Injectable()
-export class ChatService {
+export class ChannelService {
   constructor(@InjectModel(Message.name) private messageModel: Model<Message>) {}
   async getMessagesBefore(before: string, limit: number) {
     const query: any = {};

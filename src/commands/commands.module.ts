@@ -6,8 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { RunMigrationsCommand } from './commands-references/migrations.commands';
 import { MigrationsModule } from '../database/migrations/migrations.module';
-import { CreateUsersMigration } from '../database/migrations/migration-references/1-createUsersCollection';
-import { CreateMessagesMigration } from '../database/migrations/migration-references/2-createMessagesCollection';
+import { InitialMigration } from '../database/migrations/migration-references/1-initialMigration';
 
 @Module({
   imports: [
@@ -21,6 +20,6 @@ import { CreateMessagesMigration } from '../database/migrations/migration-refere
     }),
     MigrationsModule,
   ],
-  providers: [RunMigrationsCommand, CreateUsersMigration, CreateMessagesMigration],
+  providers: [RunMigrationsCommand, InitialMigration],
 })
 export class CommandsModule {}

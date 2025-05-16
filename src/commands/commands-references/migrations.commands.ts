@@ -1,9 +1,8 @@
 // src/commands/migrations.command.ts
 import { Command, CommandRunner } from 'nest-commander';
-import { CreateUsersMigration } from '../../database/migrations/migration-references/1-createUsersCollection';
 
 import { MigrationsService } from '../../database/migrations/migrations.service';
-import { CreateMessagesMigration } from '../../database/migrations/migration-references/2-createMessagesCollection';
+import { InitialMigration } from '../../database/migrations/migration-references/1-initialMigration';
 
 // Import other migrations here
 
@@ -11,15 +10,15 @@ import { CreateMessagesMigration } from '../../database/migrations/migration-ref
 export class RunMigrationsCommand extends CommandRunner {
   constructor(
     private readonly migrationService: MigrationsService,
-    private readonly createUsersMigration: CreateUsersMigration,
-    private readonly createMessagesMigration: CreateMessagesMigration,
+    private readonly initialMigration: InitialMigration,
+
     // Inject other migrations here
   ) {
     super();
   }
 
   async run(): Promise<void> {
-    const migrations = [this.createUsersMigration, this.createMessagesMigration];
+    const migrations = [this.initialMigration];
 
     await this.migrationService.executeMigrations(migrations);
     console.log('All migrations completed');

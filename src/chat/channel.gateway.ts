@@ -6,18 +6,18 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
-import { ChatService } from './chat.service';
 import { MessageDto } from './dto/message.dto';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
+import { ChannelService } from './channel.service';
 
 @WebSocketGateway({ cors: true })
-export class ChatGateway {
+export class ChannelGateway {
   @WebSocketServer()
   server: Server;
 
   constructor(
-    private readonly chatService: ChatService,
+    private readonly channelService: ChannelService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -39,11 +39,8 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('message')
-  async handleMessage(
-    @MessageBody() data: { content: string; createdAt: string },
-    @ConnectedSocket() client: Socket,
-  ) {
-    const { content, createdAt } = data;
+  async handleMessage(@MessageBody() data: MessageDto, @ConnectedSocket() client: Socket) {
+    const { content, createdAt, channelId } = data;
     const user = (client as any).user;
     const message = {
       sender: user.sub, // or user.email
@@ -51,7 +48,7 @@ export class ChatGateway {
     };
     try {
       // Save the message with the received timestamp
-      await this.chatService.create({ sender: message.sender, content, createdAt });
+      await this.channelService.create({ sender: message.sender, content, createdAt, channelId });
 
       // Emit the message back to all clients with the timestamp
       this.server.emit('message', { content, createdAt });

@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ChatService } from './chat.service';
+import { ChannelService } from './channel.service';
 
-@Controller('chat')
-export class ChatController {
-  constructor(private readonly chatService: ChatService) {}
+@Controller('channel')
+export class ChannelController {
+  constructor(private readonly channelService: ChannelService) {}
 
   @Get('messages')
   async getMessages(
@@ -11,6 +11,6 @@ export class ChatController {
     @Query('limit') limit: number = 20,
   ) {
     console.log('Fetching messages');
-    return this.chatService.getMessagesBefore(before, limit);
+    return this.channelService.getMessagesBefore(before, limit);
   }
 }
