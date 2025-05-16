@@ -24,9 +24,6 @@ export class Member {
   @Prop({ required: true })
   secondName: string;
 
-  @Prop({ required: true })
-  nickname: string;
-
   @Prop({ required: true, unique: true })
   username: string;
 

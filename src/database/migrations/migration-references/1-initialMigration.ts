@@ -33,9 +33,6 @@ export class InitialMigration implements Migration {
             secondName: {
               bsonType: 'string',
             },
-            nickname: {
-              bsonType: 'string',
-            },
             username: {
               bsonType: 'string',
             },
