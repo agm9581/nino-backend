@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ChannelService } from './channel.service';
+import { ChannelDto } from './dto/channel.dto';
 
 @Controller('channel')
 export class ChannelController {
@@ -12,5 +13,15 @@ export class ChannelController {
   ) {
     console.log('Fetching messages');
     return this.channelService.getMessagesBefore(before, limit);
+  }
+
+  @Get()
+  async getPublicChannels() {
+    return await this.channelService.getPublicChannels()
+  }
+
+  @Post()
+  async createChannel(@Body() channelDto: ChannelDto){
+    return await this.channelService.createChannel(channelDto)   
   }
 }

@@ -8,10 +8,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ChannelService } from './channel.service';
 import { ChannelController } from './channel.controller';
+import { Channel, ChannelSchema } from './entities/channel.schema';
+import { MembersModule } from 'src/members/members.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Message.name, schema: MessageSchema }]),
+    MongooseModule.forFeature([{ name: Message.name, schema: MessageSchema },{name: Channel.name, schema: ChannelSchema}]),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -21,7 +23,7 @@ import { ChannelController } from './channel.controller';
           signOptions: { expiresIn: config.get<string | number>('JWT_EXPIRATION_TIME') },
         };
       },
-    }),
+    }),MembersModule
   ],
   providers: [ChannelGateway, ChannelService],
   controllers: [ChannelController],

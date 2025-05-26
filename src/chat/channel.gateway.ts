@@ -48,7 +48,7 @@ export class ChannelGateway {
     };
     try {
       // Save the message with the received timestamp
-      await this.channelService.create({ sender: message.sender, content, createdAt, channelId });
+      await this.channelService.createMessage({ sender: message.sender, content, createdAt, channelId });
 
       // Emit the message back to all clients with the timestamp
       this.server.emit('message', { content, createdAt });
