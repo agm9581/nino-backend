@@ -9,9 +9,12 @@ import {
   UnauthorizedException,
   HttpCode,
   InternalServerErrorException,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { MemberDto } from 'src/members/dto/member.dto';
+import { Member } from 'src/members/entities/member.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -30,6 +33,7 @@ export class AuthController {
   }
 
   @Post('register')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   async register(@Body() body: MemberDto) {
     const registered = await this.authService.register(body);
     if (registered) {

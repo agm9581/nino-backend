@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "migrations:run": "ts-node src/cli.ts migrations:run",
+    "migrations:rollback": "ts-node src/cli.ts migrations:rollback",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

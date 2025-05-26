@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { MemberDto } from 'src/members/dto/member.dto';
+import { Member } from 'src/members/entities/member.schema';
 import { HashService } from 'src/members/hash.service';
 
 import { MembersService } from 'src/members/members.service';

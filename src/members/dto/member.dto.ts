@@ -16,11 +16,7 @@ export class MemberDto {
 
   @IsString()
   @IsNotEmpty()
-  secondName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  nickname: string;
+  lastName: string;
 
   @IsString()
   @IsNotEmpty()

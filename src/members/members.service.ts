@@ -18,10 +18,11 @@ export class MembersService {
   ) {}
   async create(createMemberDto: MemberDto) {
     try {
-      let { email, password } = createMemberDto;
-      password = await this.hashService.hash(password);
-      const newMember = new this.memberModel({ email, password });
-      return newMember.save();
+      createMemberDto.password = await this.hashService.hash(createMemberDto.password);
+
+      const newMember = new this.memberModel(createMemberDto);
+      await newMember.save();
+      return newMember;
     } catch (error) {
       console.log(error);
       throw new ForbiddenException(error);

@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RunMigrationsCommand } from './commands-references/migrations.commands';
 import { MigrationsModule } from '../database/migrations/migrations.module';
 import { InitialMigration } from '../database/migrations/migration-references/1-initialMigration';
+import { MigrationsRollbackCommand } from './commands-references/rollbackMigrations.commands';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { InitialMigration } from '../database/migrations/migration-references/1-
     }),
     MigrationsModule,
   ],
-  providers: [RunMigrationsCommand, InitialMigration],
+  providers: [RunMigrationsCommand, InitialMigration, MigrationsRollbackCommand],
 })
 export class CommandsModule {}

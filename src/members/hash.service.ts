@@ -4,7 +4,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class HashService {
   async hash(st: string) {
-    return await bcrypt.hash(st, 10);
+    const encrypted = await bcrypt.hash(st, 10);
+    return encrypted;
   }
 
   async compare(st: string, compare: string): Promise<boolean> {

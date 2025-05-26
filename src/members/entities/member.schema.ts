@@ -22,7 +22,7 @@ export class Member {
   firstName: string;
 
   @Prop({ required: true })
-  secondName: string;
+  lastName: string;
 
   @Prop({ required: true, unique: true })
   username: string;
@@ -35,10 +35,11 @@ export class Member {
       },
     ],
     default: [],
+    required: false,
   })
   friends: { memberId: Types.ObjectId; status: FriendshipStatus }[];
 
-  @Prop({ required: true, default: 'offline' })
+  @Prop({ required: false, default: 'offline' })
   memberStatus: string;
 }
 
