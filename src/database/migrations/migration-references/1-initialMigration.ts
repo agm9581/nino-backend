@@ -30,7 +30,7 @@ export class InitialMigration implements Migration {
             firstName: {
               bsonType: 'string',
             },
-            secondName: {
+            lastName: {
               bsonType: 'string',
             },
             username: {
